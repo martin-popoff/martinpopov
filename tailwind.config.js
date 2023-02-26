@@ -5,6 +5,7 @@ module.exports = {
     fontFamily: {
       sans: ["--font-outfit", "sans-serif"],
       serif: ["--font-playfair", "serif"],
+      mono: ["--font-ubuntu", "monospace"],
     },
     extend: {
       colors: {

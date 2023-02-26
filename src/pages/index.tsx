@@ -1,12 +1,13 @@
 import Image from "next/image";
-import { Outfit } from "next/font/google";
+import { Ubuntu_Mono } from "next/font/google";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import ThreeDee from "@/components/ThreeDee";
 
-const outfit = Outfit({
+const ubuntu_mono = Ubuntu_Mono({
+  weight: ["400"],
   subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-ubuntu",
 });
 
 export default function Home() {
@@ -33,8 +34,8 @@ export default function Home() {
   };
 
   const letter_anim = {
-    hidden: { y: "100%" },
-    show: { y: "0%" },
+    hidden: { y: "100%", opacity: 0 },
+    show: { y: "0%", opacity: 1 },
   };
 
   const face_anim = {
@@ -57,7 +58,7 @@ export default function Home() {
 
   return (
     <main
-      className={`${outfit.className} flex h-[100vh] flex-col items-center justify-center gap-8 p-4`}
+      className={`${ubuntu_mono.className} flex h-[100vh] flex-col items-center justify-center gap-8 p-4`}
       onMouseMove={(e) => handleMouseMove(e)}
     >
       <motion.span
@@ -77,7 +78,7 @@ export default function Home() {
       </div>
 
       <motion.h1
-        className="relative block overflow-hidden px-2 pt-2 text-xl text-white md:text-3xl"
+        className="relative block px-2 text-xl text-white md:text-3xl"
         variants={h1}
         initial="hidden"
         animate="show"
@@ -85,8 +86,10 @@ export default function Home() {
         {message.split("").map((letter, index) => (
           <motion.span
             key={index}
-            className={`inline-block translate-y-full ${
-              letter === " " ? "mr-1" : ""
+            className={`inline-block translate-y-full  ${
+              letter === " "
+                ? "mr-2"
+                : "before:top-1/2 before:left-0 before:block before:h-1 before:w-full before:bg-primary/100 after:absolute after:top-full after:left-0 after:mt-1 after:block after:h-1 after:w-full after:bg-primary/30"
             }`}
             variants={letter_anim}
           >
