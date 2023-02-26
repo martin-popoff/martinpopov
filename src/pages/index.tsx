@@ -35,8 +35,8 @@ export default function Home() {
   };
 
   const letter_anim = {
-    hidden: { y: "100%", opacity: 0 },
-    show: { y: "0%", opacity: 1 },
+    hidden: { y: "100%", opacity: "0" },
+    show: { y: "0%", opacity: "1" },
   };
 
   const face_anim = {
