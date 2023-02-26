@@ -9,6 +9,7 @@ export default function Document() {
           src="https://kit.fontawesome.com/73ab1ee574.js"
           crossOrigin="anonymous"
         ></script>
+        <meta name="robots" content="noindex"></meta>
       </Head>
       <body className="bg-zinc-900">
         <Main />

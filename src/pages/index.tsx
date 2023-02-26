@@ -3,6 +3,7 @@ import { Ubuntu_Mono } from "next/font/google";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import ThreeDee from "@/components/ThreeDee";
+import Head from "next/head";
 
 const ubuntu_mono = Ubuntu_Mono({
   weight: ["400"],
@@ -61,6 +62,9 @@ export default function Home() {
       className={`${ubuntu_mono.className} flex h-[100vh] flex-col items-center justify-center gap-8 p-4`}
       onMouseMove={(e) => handleMouseMove(e)}
     >
+      <Head>
+        <title>mrp.</title>
+      </Head>
       <motion.span
         className="pointer-events-none absolute top-0  left-0 z-40 block h-20 w-20 rounded-full backdrop-invert"
         animate={{
@@ -68,14 +72,17 @@ export default function Home() {
           y: mousePosition.y - 40,
         }}
       />
-      <div className="relative h-12 w-40 ">
+      <motion.div
+        animate={{ opacity: 1 }}
+        className="relative h-12 w-40 opacity-0"
+      >
         <Image
           src="/logo-alt.png"
           fill
           alt="mrp."
           className="h-full w-full object-contain"
         />
-      </div>
+      </motion.div>
 
       <motion.h1
         className="relative block px-2 text-xl text-white md:text-3xl"
@@ -115,6 +122,19 @@ export default function Home() {
         initial="down"
         className={`fa-solid ${face} pointer-events-none absolute bottom-8 left-8 z-50 text-2xl text-zinc-900`}
       />
+      <motion.p
+        className="talk fixed bottom-4 text-transparent opacity-0"
+        animate={{ opacity: 1 }}
+        transition={{ delay: message.length * 0.1 + 5 }}
+      >
+        Too eager to talk? Message{" "}
+        <a
+          href="mailto:me@martinpopov.com?subject=Hey, let's talk! 👋"
+          className="transition-colors hover:bg-primary hover:text-white"
+        >
+          me@martinpopov.com
+        </a>
+      </motion.p>
     </main>
   );
 }
