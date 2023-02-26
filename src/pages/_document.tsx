@@ -1,13 +1,19 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
     <Html lang="en">
-      <Head />
-      <body>
+      <Head>
+        <script
+          async
+          src="https://kit.fontawesome.com/73ab1ee574.js"
+          crossOrigin="anonymous"
+        ></script>
+      </Head>
+      <body className="bg-zinc-900">
         <Main />
         <NextScript />
       </body>
     </Html>
-  )
+  );
 }
