@@ -18,3 +18,12 @@
     background-position: -200% center;
   }
 }
+
+.mask-b {
+  -webkit-mask-image: radial-gradient(circle, black 50%, rgba(0, 0, 0, 0) 50%);
+  mask-image: radial-gradient(circle, black 50%, rgba(0, 0, 0, 0) 50%);
+}
+
+.circle-gradient {
+  background: radial-gradient(rgba(0, 0, 0, 0) 0%, green 15%);
+}

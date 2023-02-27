@@ -12,7 +12,7 @@ export default function Document() {
         <meta name="robots" content="noindex"></meta>
         <link rel="stylesheet" href="https://use.typekit.net/lao8pun.css" />
       </Head>
-      <body className="h-[100vh] w-[100vw] overflow-hidden bg-zinc-900">
+      <body className="bg-zinc-900">
         <Main />
         <NextScript />
       </body>

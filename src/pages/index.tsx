@@ -65,7 +65,7 @@ export default function Home() {
 
   return (
     <main
-      className={`flex h-[100vh] flex-col items-center justify-center gap-8 p-4`}
+      className={`flex h-[100vh] w-[100vw] flex-col items-center justify-center gap-8 overflow-hidden p-4`}
       onMouseMove={(e) => handleMouseMove(e)}
     >
       <Head>
