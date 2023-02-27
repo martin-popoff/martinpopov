@@ -3,7 +3,7 @@ module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontFamily: {
-      sans: ["--font-outfit", "sans-serif"],
+      sans: ["gelica", "sans-serif"],
       serif: ["--font-playfair", "serif"],
       mono: ["--font-ubuntu", "monospace"],
     },

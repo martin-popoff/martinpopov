@@ -1,42 +1,48 @@
 import Image from "next/image";
-import { Ubuntu_Mono } from "next/font/google";
+import { Shrikhand } from "next/font/google";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import ThreeDee from "@/components/ThreeDee";
 import Head from "next/head";
 
-const ubuntu_mono = Ubuntu_Mono({
+const ubuntu_mono = Shrikhand({
   weight: ["400"],
   subsets: ["latin"],
   variable: "--font-ubuntu",
 });
+
+const easeInOutBack = (x: number): number => {
+  const c1 = 1.70158;
+  const c2 = c1 * 1.525;
+
+  return x < 0.5
+    ? (Math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2
+    : (Math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
+};
 
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: -50, y: -50 });
   const [face, setFace] = useState("fa-face-smile ");
 
   const h1 = {
-    hidden: {},
+    hidden: { opacity: 0 },
     show: {
+      opacity: 1,
+
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 1,
+        delay: 3,
+        staggerChildren: 0.075,
+        delayChildren: 3,
       },
     },
   };
 
-  const easeInOutBack = (x: number): number => {
-    const c1 = 1.70158;
-    const c2 = c1 * 1.525;
-
-    return x < 0.5
-      ? (Math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2
-      : (Math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
-  };
-
   const letter_anim = {
-    hidden: { y: "100%", opacity: "0" },
-    show: { y: "0%", opacity: "1" },
+    hidden: { opacity: 0, y: "100%" },
+    show: {
+      opacity: 1,
+      y: "0%",
+    },
   };
 
   const face_anim = {
@@ -59,21 +65,21 @@ export default function Home() {
 
   return (
     <main
-      className={`${ubuntu_mono.className} flex h-[100vh] flex-col items-center justify-center gap-8 p-4`}
+      className={`flex h-[100vh] flex-col items-center justify-center gap-8 p-4`}
       onMouseMove={(e) => handleMouseMove(e)}
     >
       <Head>
         <title>mrp.</title>
       </Head>
       <motion.span
-        className="pointer-events-none absolute top-0  left-0 z-40 block h-20 w-20 rounded-full backdrop-invert"
+        className="pointer-events-none fixed top-0  left-0 z-40 block h-20 w-20 rounded-full backdrop-invert"
         animate={{
           x: mousePosition.x - 40,
           y: mousePosition.y - 40,
         }}
       />
       <motion.div
-        animate={{ opacity: 1 }}
+        animate={{ opacity: 1, transition: { delay: 1.5 } }}
         className="relative h-12 w-40 opacity-0"
       >
         <Image
@@ -85,28 +91,29 @@ export default function Home() {
       </motion.div>
 
       <motion.h1
-        className="relative block px-2 text-xl text-white md:text-3xl"
+        className="relative block -skew-y-3 bg-primary text-center font-sans text-xl font-medium italic text-zinc-900 md:text-3xl"
         variants={h1}
         initial="hidden"
         animate="show"
       >
-        {message.split("").map((letter, index) => (
-          <motion.span
-            key={index}
-            className={`inline-block translate-y-full  ${
-              letter === " "
-                ? "mr-2"
-                : "before:top-1/2 before:left-0 before:block before:h-1 before:w-full before:bg-primary/100 after:absolute after:top-full after:left-0 after:mt-1 after:block after:h-1 after:w-full after:bg-primary/30"
-            }`}
-            variants={letter_anim}
-          >
-            {letter}
-          </motion.span>
+        {message.split(" ").map((word, key) => (
+          <span key={key} className="mr-1.5 inline-block md:mr-2">
+            {word.split("").map((letter, index) => (
+              <motion.span
+                key={index}
+                className={` inline-block 
+                after:bg-primary/30`}
+                variants={letter_anim}
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </span>
         ))}
       </motion.h1>
       <motion.div
         animate={{ opacity: 1 }}
-        transition={{ delay: message.length * 0.1 + 2 }}
+        transition={{ delay: message.length * 0.075 + 4.5 }}
         className="absolute -z-10 h-4/5  max-h-[25rem] w-4/5 max-w-[25rem] opacity-0"
       >
         <ThreeDee />
@@ -123,14 +130,14 @@ export default function Home() {
         className={`fa-solid ${face} pointer-events-none absolute bottom-8 left-8 z-50 text-2xl text-zinc-900`}
       />
       <motion.p
-        className="talk fixed bottom-4 text-transparent opacity-0"
+        className="talk fixed bottom-4 text-center text-sm font-thin text-transparent opacity-0 md:text-base"
         animate={{ opacity: 1 }}
         transition={{ delay: message.length * 0.1 + 5 }}
       >
         Too eager to talk? Message{" "}
         <a
           href="mailto:me@martinpopov.com?subject=Hey, let's talk! 👋"
-          className="transition-colors hover:bg-primary hover:text-white"
+          className="font-normal transition-colors hover:bg-primary hover:text-white"
         >
           me@martinpopov.com
         </a>
