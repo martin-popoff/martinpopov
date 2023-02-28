@@ -1,6 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
-import { motion } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useSpring,
+} from "framer-motion";
 
 type Circle = {
   x: number;
@@ -31,10 +36,10 @@ function intersection(c1: Circle, c2: Circle) {
     const h = Math.sqrt(c1.r * c1.r - centroid * centroid);
     const rx = -dy * (h / dist);
     const ry = dx * (h / dist);
-    result.point_1.x = Math.round(x2 + rx);
-    result.point_1.y = Math.round(y2 + ry);
-    result.point_2.x = Math.round(x2 - rx);
-    result.point_2.y = Math.round(y2 - ry);
+    result.point_1.x = x2 + rx;
+    result.point_1.y = y2 + ry;
+    result.point_2.x = x2 - rx;
+    result.point_2.y = y2 - ry;
   }
   return result;
 }
@@ -57,6 +62,10 @@ function closestPointOnCircleEdge(A: Point, B: Point, r: number) {
 
 const Test = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const springX = useSpring(mx);
+  const springY = useSpring(my);
   const [angle, setAngle] = useState(0);
   const [distance, setDistance] = useState(0);
   const [pointA, setPointA] = useState({ x: 0, y: 0 });
@@ -82,14 +91,18 @@ const Test = () => {
   const p2 = 75;
   const r2 = 30;
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    let target = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - target.left;
-    const y = e.clientY - target.top;
+  useMotionValueEvent(springX, "change", (latest) => {
+    drawBlow();
+  });
 
+  useMotionValueEvent(springY, "change", (latest) => {
+    drawBlow();
+  });
+
+  const drawBlow = () => {
+    const x = springX.get();
+    const y = springY.get();
     const angle = Math.atan2(p2 - y, p1 - x) * (180 / Math.PI);
-
-    setMousePosition({ x, y });
 
     const res = intersection(
       { x: p1, y: p2, r: radius + r2 },
@@ -129,6 +142,12 @@ const Test = () => {
       x6: res6.x,
       y6: res6.y,
     });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    let target = e.currentTarget.getBoundingClientRect();
+    springX.set(e.clientX - target.left);
+    springY.set(e.clientY - target.top);
   };
 
   return (
@@ -187,11 +206,10 @@ const Test = () => {
             />
           </g>
           <motion.circle
-            animate={{
-              x: mousePosition.x,
-              y: mousePosition.y,
+            style={{
+              x: springX,
+              y: springY,
             }}
-            transition={{ duration: 0 }}
             r={radius}
           />
 
@@ -200,7 +218,7 @@ const Test = () => {
             className={` ${distance > 0 ? "" : "hidden"} transition-opacity`}
           >
             <path
-              d={`M ${pointC.x1} ${pointC.y1} L ${pointC.x2} ${pointC.y2} L ${pointC.x3} ${pointC.y3}  L ${pointC.x4} ${pointC.y4}  L ${pointC.x1} ${pointC.y1} Z`}
+              d={`M ${pointC.x1} ${pointC.y1} A 1 1 0 0 0 ${pointC.x2} ${pointC.y2} L ${pointC.x3} ${pointC.y3}  A 1 1 0 0 0 ${pointC.x4} ${pointC.y4}  L ${pointC.x1} ${pointC.y1} Z`}
             />
           </g>
           <circle cx={pointA.x} cy={pointA.y} r={distance} fill="#f4f4f5" />
@@ -210,9 +228,7 @@ const Test = () => {
       <p className="bg-primary px-2 text-right text-zinc-900">
         Using: ThreeJS & AsciiRenderer
       </p>
-      <p className="bg-zinc-100">
-        {mousePosition.x} {mousePosition.y} {angle} {distance}
-      </p>
+      <p className="bg-zinc-100">{mx.get()}</p>
     </main>
   );
 };
